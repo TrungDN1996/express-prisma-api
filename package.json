@@ -1,0 +1,18 @@
+{
+  "name": "@api/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test"
+  },
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "^5.11.0",
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-jwt": "^8.4.1"
+  }
+}
