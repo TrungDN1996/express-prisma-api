@@ -1,10 +1,14 @@
-import express from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
-import * as routes from './app/routes/routes';
-import { HttpException } from './app/models/index';
+import routes from './app/routes/routes';
+import HttpException from './app/core/models/http-exception.model';
+import dotenv from "dotenv";
 
-const app = express();
+dotenv.config();
+
+const app: Express = express();
+const PORT = process.env.PORT || 3000;
 
 /**
  * App Configuration
@@ -46,8 +50,6 @@ app.use(
 /**
  * Server activation
  */
-
-const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.info(`server up on port ${PORT}`);
