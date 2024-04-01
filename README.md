@@ -1,6 +1,6 @@
 ## Description
 
-It is a demo app on Express-JS, GraphQL and PostgreSQL(Prisma). You can:
+It is a demo app on Express-JS and PostgreSQL(Prisma). You can:
 1. Login, Register.
 2. User follow another users.
 3. CRUD Article, Tag.
