@@ -3,7 +3,6 @@ import { Tag } from '../../models/index';
 
 const getTags = async (id?: number): Promise<string[]> => {
   const queries: any[] = [];
-  queries.push({ demo: true });
 
   if (id) {
     queries.push({

@@ -52,5 +52,4 @@ model User {
   followedBy User[]    @relation("UserFollows")
   following  User[]    @relation("UserFollows")
   comments   Comment[]
-  demo       Boolean   @default(false)
 }

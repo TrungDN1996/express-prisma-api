@@ -14,12 +14,6 @@ const buildFindAllQuery = (query: any, id?: number) => {
   const orAuthorQuery: any[] = [];
   const andAuthorQuery: any[] = [];
 
-  orAuthorQuery.push({
-    demo: {
-      equals: true,
-    },
-  });
-
   if (id) {
     orAuthorQuery.push({
       id: {
@@ -419,12 +413,6 @@ export const deleteArticle = async (slug: string, id?: number) => {
 
 export const getCommentsByArticle = async (slug: string, id?: number) => {
   const queries: any[] = [];
-
-  queries.push({
-    author: {
-      demo: true,
-    },
-  });
 
   if (id) {
     queries.push({

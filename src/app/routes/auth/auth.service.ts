@@ -41,7 +41,7 @@ export const createUser = async (input: RegisterInput): Promise<RegisteredUser> 
   const email = input.email?.trim();
   const username = input.username?.trim();
   const password = input.password?.trim();
-  const { image, bio, demo } = input;
+  const { image, bio } = input;
 
   if (!email) {
     throw new HttpException(422, { errors: { email: ["can't be blank"] } });
@@ -66,7 +66,6 @@ export const createUser = async (input: RegisterInput): Promise<RegisteredUser> 
       password: hashedPassword,
       ...(image ? { image } : {}),
       ...(bio ? { bio } : {}),
-      ...(demo ? { demo } : {}),
     },
     select: {
       id: true,

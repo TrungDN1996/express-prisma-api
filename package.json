@@ -8,7 +8,8 @@
     "start": "node dist/main.js",
     "dev": "nodemon src/main.ts",
     "add-migration": "npx prisma migrate dev",
-    "update-database": "npx prisma db push"
+    "update-database": "npx prisma db push",
+    "seed-db": "npx prisma db seed"
   },
   "private": true,
   "prisma": {
@@ -16,6 +17,7 @@
     "schema": "src/prisma/schema.prisma"
   },
   "dependencies": {
+    "@ngneat/falso": "^7.2.0",
     "@prisma/client": "^5.11.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
