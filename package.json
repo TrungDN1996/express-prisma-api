@@ -2,11 +2,13 @@
   "name": "express-graphql-api",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "dist/main.ts",
+  "main": "dist/main.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "node src/main.js",
-    "dev": "nodemon src/main.ts"
+    "start": "node dist/main.js",
+    "dev": "nodemon src/main.ts",
+    "add-migration": "npx prisma migrate dev",
+    "update-database": "npx prisma db push"
   },
   "private": true,
   "prisma": {

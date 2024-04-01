@@ -46,6 +46,7 @@ model User {
   username   String    @unique
   password   String
   image      String?   @default("")
+  bio        String?
   articles   Article[] @relation("UserArticles")
   favorites  Article[] @relation("UserFavorites")
   followedBy User[]    @relation("UserFollows")
