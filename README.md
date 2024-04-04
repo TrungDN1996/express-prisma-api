@@ -17,6 +17,14 @@ Run the following command to install dependencies:
 npm install
 ```
 
+### Run with docker
+
+Run the following command to build PostgreSQL instance:
+
+```shell
+docker-compose up -d postgres
+```
+
 ### Environment variables
 
 This project depends on some environment variables.
