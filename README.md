@@ -5,7 +5,7 @@ It is a demo app on Express-JS and PostgreSQL(Prisma). You can:
 2. User follow another users.
 3. CRUD Article, Tag.
 
-See OpenAPI(Swagger) http://localhost:3000/api/#/
+Host API http://localhost:3000/api
 
 ## Getting Started
 
@@ -64,6 +64,11 @@ Run the following command to run the project:
 npm run build
 npm run start
 ```
+
+### Swagger UI (Tsoa)
+
+See OpenAPI(Swagger) http://localhost:3000/docs
+![alt text](image.png)
 
 ## Stay in touch
 
