@@ -1,4 +1,4 @@
-export interface RegisteredUser {
+export interface TokenUserDto {
   id: number;
   email: string;
   username: string;

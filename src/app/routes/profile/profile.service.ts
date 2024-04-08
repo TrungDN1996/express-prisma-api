@@ -1,11 +1,12 @@
 import prisma from '../../../prisma/prisma-client';
 import { profileMapper } from '../../core/mappers/index';
-import HttpException from '../../core/models/http-exception.model';
+import HttpException from '../../core/base/http-exception';
+import { Profile } from '../../types';
 
-export const getProfile = async (usernamePayload: string, id?: number) => {
+export const getProfile = async (userId: number): Promise<Profile> => {
   const profile = await prisma.user.findUnique({
     where: {
-      username: usernamePayload,
+      id: userId,
     },
     include: {
       followedBy: true,
@@ -16,18 +17,18 @@ export const getProfile = async (usernamePayload: string, id?: number) => {
     throw new HttpException(404, {});
   }
 
-  return profileMapper(profile, id);
+  return profileMapper(profile, userId);
 };
 
-export const followUser = async (usernamePayload: string, id?: number) => {
+export const followUser = async (followUserId: number, userId?: number): Promise<Profile> => {
   const profile = await prisma.user.update({
     where: {
-      username: usernamePayload,
+      id: userId,
     },
     data: {
       followedBy: {
         connect: {
-          id,
+          id: followUserId,
         },
       },
     },
@@ -36,18 +37,18 @@ export const followUser = async (usernamePayload: string, id?: number) => {
     },
   });
 
-  return profileMapper(profile, id);
+  return profileMapper(profile, userId);
 };
 
-export const unfollowUser = async (usernamePayload: string, id?: number) => {
+export const unfollowUser = async (unfollowUserId: number, userId?: number): Promise<Profile> => {
   const profile = await prisma.user.update({
     where: {
-      username: usernamePayload,
+      id: userId,
     },
     data: {
       followedBy: {
         disconnect: {
-          id,
+          id: unfollowUserId,
         },
       },
     },
@@ -56,5 +57,5 @@ export const unfollowUser = async (usernamePayload: string, id?: number) => {
     },
   });
 
-  return profileMapper(profile, id);
+  return profileMapper(profile, userId);
 };

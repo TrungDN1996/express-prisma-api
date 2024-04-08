@@ -5,9 +5,9 @@ import profileController from './profile/profile.controller';
 import authController from './auth/auth.controller';
 
 const api = Router()
-  .use(tagsController)
-  .use(articlesController)
-  .use(profileController)
-  .use(authController);;
+  .use('/tags', tagsController)
+  .use('/articles', articlesController)
+  .use('/profiles', profileController)
+  .use('/users', authController);
 
 export default Router().use('/api', api);

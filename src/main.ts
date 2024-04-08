@@ -2,8 +2,10 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import routes from './app/routes/routes';
-import HttpException from './app/core/models/http-exception.model';
+import HttpException from './app/core/base/http-exception';
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+import { RegisterRoutes } from './swagger/routes';
 
 dotenv.config();
 
@@ -31,6 +33,7 @@ app.use(
     res: express.Response,
     next: express.NextFunction,
   ) => {
+    console.error(err);
     // @ts-ignore
     if (err && err.name === 'UnauthorizedError') {
       return res.status(401).json({
@@ -54,3 +57,16 @@ app.use(
 app.listen(PORT, () => {
   console.info(`server up on port ${PORT}`);
 });
+
+/**
+ * Swagger avtivation
+ */
+
+const options = {
+  swaggerOptions: {
+  },
+};
+app.use('/docs', swaggerUi.serve, async (_req: express.Request, res: express.Response) => {
+  return res.send(swaggerUi.generateHTML(await import('./swagger/swagger.json'), options));
+});
+RegisterRoutes(app);

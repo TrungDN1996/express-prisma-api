@@ -1,12 +1,9 @@
 import * as bcrypt from 'bcryptjs';
 import prisma from '../../../prisma/prisma-client';
-import { 
-  User, 
-  RegisterInput, 
-  RegisteredUser 
-} from '../../models/index';
+import { User } from '../../types/index';
 import { generateToken } from '../../core/utils/index';
-import HttpException from '../../core/models/http-exception.model';
+import HttpException from '../../core/base/http-exception';
+import { createUserDto, TokenUserDto, LoginDto } from './models';
 
 const checkUserUniqueness = async (email: string, username: string) => {
   const existingUserByEmail = await prisma.user.findUnique({
@@ -37,7 +34,7 @@ const checkUserUniqueness = async (email: string, username: string) => {
   }
 };
 
-export const createUser = async (input: RegisterInput): Promise<RegisteredUser> => {
+export const createUser = async (input: createUserDto): Promise<TokenUserDto> => {
   const email = input.email?.trim();
   const username = input.username?.trim();
   const password = input.password?.trim();
@@ -82,7 +79,7 @@ export const createUser = async (input: RegisterInput): Promise<RegisteredUser> 
   };
 };
 
-export const login = async (userPayload: any) => {
+export const login = async (userPayload: LoginDto): Promise<TokenUserDto> => {
   const email = userPayload.email?.trim();
   const password = userPayload.password?.trim();
 
@@ -113,6 +110,7 @@ export const login = async (userPayload: any) => {
 
     if (match) {
       return {
+        id: user.id,
         email: user.email,
         username: user.username,
         bio: user.bio,
@@ -129,7 +127,7 @@ export const login = async (userPayload: any) => {
   });
 };
 
-export const getCurrentUser = async (id?: number) => {
+export const getCurrentUser = async (id?: number): Promise<TokenUserDto> => {
   const user = (await prisma.user.findUnique({
     where: {
       id,
@@ -149,7 +147,7 @@ export const getCurrentUser = async (id?: number) => {
   };
 };
 
-export const updateUser = async (userPayload: any, id?: number) => {
+export const updateUser = async (id: number, userPayload: createUserDto): Promise<TokenUserDto> => {
   const { email, username, password, image, bio } = userPayload;
   let hashedPassword;
 

@@ -1,4 +1,4 @@
-import { User, Profile } from '../../models/index';
+import { User, Profile } from '../../types/index';
 
 export const profileMapper = (user: any, id: number | undefined): Profile => ({
   username: user.username,

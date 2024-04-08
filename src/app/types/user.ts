@@ -1,5 +1,5 @@
-import { Article } from '../article/article.model';
-import { Comment } from '../article/comment.model';
+import { Article } from './article';
+import { Comment } from './comment';
 
 export interface User {
   id: number;

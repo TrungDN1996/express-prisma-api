@@ -1,4 +1,4 @@
-import { User } from '../../models/index';
+import { User } from '../../types/index';
 
 export const authorMapper = (author: any, id?: number) => ({
   username: author.username,

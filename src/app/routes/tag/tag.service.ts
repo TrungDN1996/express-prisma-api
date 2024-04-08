@@ -1,13 +1,13 @@
 import prisma from '../../../prisma/prisma-client';
-import { Tag } from '../../models/index';
+import { Tag } from '../../types/index';
 
-const getTags = async (id?: number): Promise<string[]> => {
+export const getTags = async (userId: number): Promise<string[]> => {
   const queries: any[] = [];
 
-  if (id) {
+  if (userId) {
     queries.push({
       id: {
-        equals: id,
+        equals: userId,
       },
     });
   }
@@ -35,5 +35,3 @@ const getTags = async (id?: number): Promise<string[]> => {
 
   return tags.map((tag: Tag) => tag.name);
 };
-
-export default getTags;

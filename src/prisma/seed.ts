@@ -4,21 +4,20 @@ import {
   randLines,
   randParagraph,
   randPassword, randPhrase,
-  randWord, 
-  randSlug
+  randWord
 } from '@ngneat/falso';
 import { PrismaClient } from '@prisma/client';
-import { RegisteredUser } from '../app/models/index';
 import { createUser } from '../app/routes/auth/auth.service';
 import { addComment, createArticle } from '../app/routes/article/article.service';
 import dotenv from "dotenv";
+import { TokenUserDto } from '../app/routes/auth/models';
 
 dotenv.config();
 
 const prisma = new PrismaClient();
 const URL = "http://localhost:" + (process.env.PORT || 3000);
 
-export const generateUser = async (): Promise<RegisteredUser> =>
+export const generateUser = async (): Promise<TokenUserDto> =>
   createUser({
     username: randFullName(),
     email: randEmail(),
@@ -26,20 +25,19 @@ export const generateUser = async (): Promise<RegisteredUser> =>
     image:  URL + '/images/default-avatar.jpg',
   });
 
-export const generateArticle = async (id: number) =>
+export const generateArticle = async (userId: number) =>
   createArticle(
     {
-      slug: randSlug(),
       title: randPhrase(),
       description: randParagraph(),
       body: randLines({ length: 10 }).join(' '),
       tagList: randWord({ length: 4 }),
     },
-    id,
+    userId,
   );
 
-export const generateComment = async (id: number, slug: string) =>
-  addComment(randParagraph(), slug, id);
+export const generateComment = async (slug: string, userId: number) =>
+  addComment(randParagraph(), slug, userId);
 
 const main = async () => {
   try {
@@ -52,7 +50,7 @@ const main = async () => {
 
       // eslint-disable-next-line no-restricted-syntax
       for await (const article of articles) {
-        await Promise.all(users.map(userItem => generateComment(userItem.id, article.slug)));
+        await Promise.all(users.map(userItem => generateComment(article.slug, userItem.id)));
       }
     }
   } catch (e) {

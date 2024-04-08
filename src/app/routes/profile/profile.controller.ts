@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import auth from '../../core/middlewares/auth.middleware';
+import { auth } from '../../core/middlewares/auth.middleware';
 import { followUser, getProfile, unfollowUser } from './profile.service';
 
 const router = Router();
@@ -12,12 +12,12 @@ const router = Router();
  * @returns profile
  */
 router.get(
-  '/profiles/:username',
+  '/userId/:userId',
   auth.optional,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const profile = await getProfile(req.params.username, req.auth?.user?.id);
-      res.json({ profile });
+      const profile = await getProfile(Number(req.params.userId));
+      res.json({ ...profile });
     } catch (error) {
       next(error);
     }
@@ -32,12 +32,12 @@ router.get(
  * @returns profile
  */
 router.post(
-  '/profiles/:username/follow',
+  '/follow',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const profile = await followUser(req.params?.username, req.auth?.user?.id);
-      res.json({ profile });
+      const profile = await followUser(Number(req.body.followUserId), req.auth?.user?.id, );
+      res.json({ ...profile });
     } catch (error) {
       next(error);
     }
@@ -52,11 +52,11 @@ router.post(
  * @returns profiles
  */
 router.delete(
-  '/profiles/:username/follow',
+  '/unfollow',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const profile = await unfollowUser(req.params.username, req.auth?.user?.id);
+      const profile = await unfollowUser(Number(req.body.unfollowUserId), req.auth?.user?.id);
       res.json({ profile });
     } catch (error) {
       next(error);

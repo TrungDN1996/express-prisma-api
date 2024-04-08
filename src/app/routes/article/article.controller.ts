@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import auth from '../../core/middlewares/auth.middleware';
+import { auth } from '../../core/middlewares/auth.middleware';
 import {
   addComment,
   createArticle,
@@ -27,7 +27,7 @@ const router = Router();
  * @queryparam favorited
  * @returns articles: list of articles
  */
-router.get('/articles', auth.optional, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', auth.optional, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const result = await getArticles(req.query, req.auth?.user?.id);
     res.json(result);
@@ -43,10 +43,11 @@ router.get('/articles', auth.optional, async (req: Request, res: Response, next:
  * @returns articles list of articles
  */
 router.get(
-  '/articles/feed',
+  '/feed',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log('req', req.auth?.user?.id)
       const result = await getFeed(
         Number(req.query.offset),
         Number(req.query.limit),
@@ -68,7 +69,7 @@ router.get(
  * @bodyparam  tagList list of tags
  * @returns article created article
  */
-router.post('/articles', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', auth.required, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const article = await createArticle(req.body.article, req.auth?.user?.id);
     res.status(201).json({ article });
@@ -85,7 +86,7 @@ router.post('/articles', auth.required, async (req: Request, res: Response, next
  * @returns article
  */
 router.get(
-  '/articles/:slug',
+  '/:slug',
   auth.optional,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -108,7 +109,7 @@ router.get(
  * @returns article updated article
  */
 router.put(
-  '/articles/:slug',
+  '/:slug',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -127,11 +128,11 @@ router.put(
  * @param slug slug of the article
  */
 router.delete(
-  '/articles/:slug',
+  '/:slug',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await deleteArticle(req.params.slug, req.auth?.user!.id);
+      await deleteArticle(req.params.slug, req.auth?.user?.id);
       res.sendStatus(204);
     } catch (error) {
       next(error);
@@ -147,7 +148,7 @@ router.delete(
  * @returns comments list of comments
  */
 router.get(
-  '/articles/:slug/comments',
+  '/:slug/comments',
   auth.optional,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -168,7 +169,7 @@ router.get(
  * @returns comment created comment
  */
 router.post(
-  '/articles/:slug/comments',
+  '/:slug/comments',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -188,7 +189,7 @@ router.post(
  * @param id id of the comment
  */
 router.delete(
-  '/articles/:slug/comments/:id',
+  '/:slug/comments/:id',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -208,7 +209,7 @@ router.delete(
  * @returns article favorited article
  */
 router.post(
-  '/articles/:slug/favorite',
+  '/:slug/favorite',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -228,7 +229,7 @@ router.post(
  * @returns article unfavorited article
  */
 router.delete(
-  '/articles/:slug/favorite',
+  '/:slug/favorite',
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

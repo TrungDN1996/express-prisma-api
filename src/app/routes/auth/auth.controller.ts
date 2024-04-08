@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import auth from '../../core/middlewares/auth.middleware';
+import { auth } from '../../core/middlewares/auth.middleware';
 import { createUser, getCurrentUser, login, updateUser } from './auth.service';
 
 const router = Router();
@@ -11,10 +11,10 @@ const router = Router();
  * @bodyparam user User
  * @returns user User
  */
-router.post('/users', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await createUser({ ...req.body.user  });
-    res.status(201).json({ user });
+    const user = await createUser({ ...req.body });
+    res.status(201).json({ ...user });
   } catch (error) {
     next(error);
   }
@@ -27,10 +27,10 @@ router.post('/users', async (req: Request, res: Response, next: NextFunction) =>
  * @bodyparam user User
  * @returns user User
  */
-router.put('/user', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:id', auth.required, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await updateUser(req.body.user, req.auth?.user?.id);
-    res.json({ user });
+    const user = await updateUser(Number(req.params.id), req.body);
+    res.json({ ...user });
   } catch (error) {
     next(error);
   }
@@ -43,10 +43,10 @@ router.put('/user', auth.required, async (req: Request, res: Response, next: Nex
  * @bodyparam user User
  * @returns user User
  */
-router.post('/users/login', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await login(req.body.user);
-    res.json({ user });
+    const user = await login(req.body);
+    res.json({ ...user });
   } catch (error) {
     next(error);
   }
@@ -58,10 +58,10 @@ router.post('/users/login', async (req: Request, res: Response, next: NextFuncti
  * @route {GET} /user
  * @returns user User
  */
-router.get('/user', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', auth.required, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await getCurrentUser(req.auth?.user?.id);
-    res.json({ user });
+    const user = await getCurrentUser(Number(req.auth?.user?.id));
+    res.json({ ...user });
   } catch (error) {
     next(error);
   }
